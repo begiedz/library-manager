@@ -2,7 +2,7 @@
 
 Projekt Java, który pozwala na zarządzanie swoją biblioteką książek.
 
-## Zaimplementowane funckjonalności
+## Zaimplementowane funkcjonalności
 
 - wyszukiwanie książek z wykorzystaniem wyrażeń regularnych,
 - sortowanie książek według różnych kryteriów (np. tytuł, autor, rok wydania, gatunek),
