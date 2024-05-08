@@ -5,14 +5,7 @@ import java.util.ArrayList;
 
 public class Main{
   public static final String ANSI_RESET = "\u001B[0m";
-  public static final String ANSI_BLACK = "\u001B[30m";
-  public static final String ANSI_RED = "\u001B[31m";
   public static final String ANSI_GREEN = "\u001B[32m";
-  public static final String ANSI_YELLOW = "\u001B[33m";
-  public static final String ANSI_BLUE = "\u001B[34m";
-  public static final String ANSI_PURPLE = "\u001B[35m";
-  public static final String ANSI_CYAN = "\u001B[36m";
-  public static final String ANSI_WHITE = "\u001B[37m";
   public static final String ANSI_BOLD = "\033[0;1m";
   public static void main (String[] args){
     BookManager bookManager = new BookManager();
@@ -23,11 +16,9 @@ public class Main{
     bookManager.addBook(new Book("Quo Vadis", "Henryk Sienkiewicz", 1896, "Historyczna"));
     bookManager.addBook(new Book("Ferdydurke", "Witold Gombrowicz", 1937, "Absurdalna"));
     bookManager.addBook(new Book("Solaris", "Stanisław Lem", 1961, "Science fiction"));
-    
 
     Scanner scanner = new Scanner(System.in);
     boolean isRunning = true;
-
 
     System.out.println(ANSI_GREEN + "Java Library Manager" + ANSI_RESET);
     while (isRunning) {
@@ -46,7 +37,7 @@ public class Main{
 
       switch (choice) {
         case 1:
-            displayAllBooks(bookManager);
+            displayAllBooks(scanner, bookManager);
             break;
         case 2:
             addNewBook(scanner, bookManager);
@@ -67,8 +58,39 @@ public class Main{
     scanner.close();
   }
   
-    private static void displayAllBooks(BookManager bookManager) {
-      ArrayList<Book> books = bookManager.sortBooks("title");
+    private static void displayAllBooks(Scanner scanner, BookManager bookManager) {
+      System.out.println("");
+      System.out.println("Choose sorting criteria:");
+      System.out.println("1. Title");
+      System.out.println("2. Author");
+      System.out.println("3. Publication Year");
+      System.out.println("4. Genre");
+      System.out.println("");
+      System.out.print("Enter sorting criteria number: ");
+
+      int sortChoice = scanner.nextInt();
+    scanner.nextLine();
+
+    String sortCriteria;
+    switch (sortChoice) {
+        case 1:
+            sortCriteria = "title";
+            break;
+        case 2:
+            sortCriteria = "author";
+            break;
+        case 3:
+            sortCriteria = "year";
+            break;
+        case 4:
+            sortCriteria = "genre";
+            break;
+        default:
+            System.out.println("Invalid selection. Sorting by title.");
+            sortCriteria = "title";
+    }
+
+      ArrayList<Book> books = bookManager.sortBooks(sortCriteria);
       if (books.isEmpty()) {
           System.out.println("No books in library");
       } else {
