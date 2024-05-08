@@ -16,7 +16,7 @@ public class BookManager {
     books.remove(book);
   }
 
- public ArrayList<Book> searchBooks(String inputedText) {
+  public ArrayList<Book> searchBooks(String inputedText) {
 
         String searchText = inputedText.toLowerCase();
         ArrayList<Book> matchingBooks = new ArrayList<>();
@@ -53,6 +53,12 @@ public class BookManager {
             default:
                 throw new IllegalArgumentException("Invalid criteria.");
         }
-        return sortedBooks;
+    return sortedBooks;
+  }
+
+  public void displayBooks(ArrayList<Book> books) {
+    for (Book book : books) {
+        System.out.println(book);
     }
   }
+}
