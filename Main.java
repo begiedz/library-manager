@@ -5,15 +5,15 @@ import java.util.ArrayList;
 
 public class Main{
   public static final String ANSI_RESET = "\u001B[0m";
-public static final String ANSI_BLACK = "\u001B[30m";
-public static final String ANSI_RED = "\u001B[31m";
-public static final String ANSI_GREEN = "\u001B[32m";
-public static final String ANSI_YELLOW = "\u001B[33m";
-public static final String ANSI_BLUE = "\u001B[34m";
-public static final String ANSI_PURPLE = "\u001B[35m";
-public static final String ANSI_CYAN = "\u001B[36m";
-public static final String ANSI_WHITE = "\u001B[37m";
-public static final String BOLD = "\033[0;1m";
+  public static final String ANSI_BLACK = "\u001B[30m";
+  public static final String ANSI_RED = "\u001B[31m";
+  public static final String ANSI_GREEN = "\u001B[32m";
+  public static final String ANSI_YELLOW = "\u001B[33m";
+  public static final String ANSI_BLUE = "\u001B[34m";
+  public static final String ANSI_PURPLE = "\u001B[35m";
+  public static final String ANSI_CYAN = "\u001B[36m";
+  public static final String ANSI_WHITE = "\u001B[37m";
+  public static final String ANSI_BOLD = "\033[0;1m";
   public static void main (String[] args){
     BookManager bookManager = new BookManager();
 
@@ -32,7 +32,7 @@ public static final String BOLD = "\033[0;1m";
     System.out.println(ANSI_GREEN + "Java Library Manager" + ANSI_RESET);
     while (isRunning) {
       System.out.println("");
-      System.out.println(BOLD + "Menu:" + ANSI_RESET );
+      System.out.println(ANSI_BOLD + "Menu:" + ANSI_RESET );
       System.out.println("1. Show all books");
       System.out.println("2. Add new book");
       System.out.println("3. Edit book");
@@ -55,7 +55,7 @@ public static final String BOLD = "\033[0;1m";
             editBook(scanner, bookManager);
             break;
         case 4:
-            // removeBook(scanner, bookManager);
+            removeBook(scanner, bookManager);
             break;
         case 5:
             isRunning = false;
@@ -66,6 +66,7 @@ public static final String BOLD = "\033[0;1m";
     }
     scanner.close();
   }
+  
     private static void displayAllBooks(BookManager bookManager) {
       ArrayList<Book> books = bookManager.sortBooks("title");
       if (books.isEmpty()) {
@@ -117,7 +118,7 @@ public static final String BOLD = "\033[0;1m";
 
       System.out.print("Choose the number of the book to edit: ");
       int index = scanner.nextInt() - 1;
-      scanner.nextLine(); // Clear the newline character from the buffer
+      scanner.nextLine();
 
       if (index < 0 || index >= books.size()) {
           System.out.println("Invalid book number.");
@@ -155,6 +156,38 @@ public static final String BOLD = "\033[0;1m";
           bookToEdit.setGenre(newGenre);
       }
 
+      System.out.println("");
       System.out.println("Book updated successfully.");
+    }
+
+    private static void removeBook(Scanner scanner, BookManager bookManager) {
+      System.out.print("");
+      System.out.print("Enter the title of the book to remove: ");
+      String titleToRemove = scanner.nextLine();
+      ArrayList<Book> books = bookManager.searchBooks(titleToRemove);
+
+      if (books.isEmpty()) {
+          System.out.println("Book not found.");
+          return;
+      }
+
+      System.out.println("Select a book to remove:");
+      for (int i = 0; i < books.size(); i++) {
+          System.out.println((i + 1) + ". " + books.get(i));
+      }
+
+      System.out.print("Choose the number of the book to remove: ");
+      int index = scanner.nextInt() - 1;
+      scanner.nextLine();
+
+      if (index < 0 || index >= books.size()) {
+          System.out.println("Invalid book number.");
+          return;
+      }
+
+      Book bookToRemove = books.get(index);
+      bookManager.removeBook(bookToRemove);
+      System.out.println("");
+      System.out.println("Book " + bookToRemove.getTitle() + " removed successfully.");
     }
   }
