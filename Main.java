@@ -4,6 +4,16 @@ import java.util.Scanner;
 import java.util.ArrayList;
 
 public class Main{
+  public static final String ANSI_RESET = "\u001B[0m";
+public static final String ANSI_BLACK = "\u001B[30m";
+public static final String ANSI_RED = "\u001B[31m";
+public static final String ANSI_GREEN = "\u001B[32m";
+public static final String ANSI_YELLOW = "\u001B[33m";
+public static final String ANSI_BLUE = "\u001B[34m";
+public static final String ANSI_PURPLE = "\u001B[35m";
+public static final String ANSI_CYAN = "\u001B[36m";
+public static final String ANSI_WHITE = "\u001B[37m";
+public static final String BOLD = "\033[0;1m";
   public static void main (String[] args){
     BookManager bookManager = new BookManager();
 
@@ -18,13 +28,17 @@ public class Main{
     Scanner scanner = new Scanner(System.in);
     boolean isRunning = true;
 
+
+    System.out.println(ANSI_GREEN + "Java Library Manager" + ANSI_RESET);
     while (isRunning) {
-      System.out.println("Menu:");
+      System.out.println("");
+      System.out.println(BOLD + "Menu:" + ANSI_RESET );
       System.out.println("1. Show all books");
       System.out.println("2. Add new book");
       System.out.println("3. Edit book");
       System.out.println("4. Delete book");
       System.out.println("5. Exit program");
+      System.out.println("");
       System.out.print("Choose action: ");
 
       int choice = scanner.nextInt();
@@ -35,10 +49,10 @@ public class Main{
             displayAllBooks(bookManager);
             break;
         case 2:
-            // addNewBook(scanner, bookManager);
+            addNewBook(scanner, bookManager);
             break;
         case 3:
-            // editBook(scanner, bookManager);
+            editBook(scanner, bookManager);
             break;
         case 4:
             // removeBook(scanner, bookManager);
@@ -47,21 +61,100 @@ public class Main{
             isRunning = false;
             break;
         default:
-            System.out.println("Nieprawidłowy wybór. Spróbuj ponownie.");
+            System.out.println("Incorrect selection. Try again.");
       }
     }
     scanner.close();
   }
-
     private static void displayAllBooks(BookManager bookManager) {
       ArrayList<Book> books = bookManager.sortBooks("title");
       if (books.isEmpty()) {
           System.out.println("No books in library");
       } else {
         System.out.println("");
-        System.out.println("All Books:");
+        System.out.println("All books:");
         bookManager.displayBooks(books);
         System.out.println("");
       }
+    }
+
+    private static void addNewBook(Scanner scanner, BookManager bookManager) {
+      System.out.println("");
+      System.out.print( "Enter the title of the book: " );
+      String title = scanner.nextLine();
+      System.out.println("");
+      System.out.print("Enter the author of the book: ");
+      String author = scanner.nextLine();
+      System.out.println("");
+      System.out.print("Enter the publication year of the book: ");
+      int year = scanner.nextInt();
+      scanner.nextLine();
+      System.out.println("");
+      System.out.print("Enter the genre of the book: ");
+      String genre = scanner.nextLine();
+
+      Book newBook = new Book(title, author, year, genre);
+      bookManager.addBook(newBook);
+      System.out.println("");
+      System.out.println("Book added successfully.");
+    }
+
+    private static void editBook(Scanner scanner, BookManager bookManager) {
+      System.out.print("");
+      System.out.print( "Enter the title of the book to edit: " );
+      String titleToEdit = scanner.nextLine();
+      ArrayList<Book> books = bookManager.searchBooks(titleToEdit);
+
+      if (books.isEmpty()) {
+          System.out.println("Book not found.");
+          return;
+      }
+
+      System.out.println("Select a book to edit:");
+      for (int i = 0; i < books.size(); i++) {
+          System.out.println((i + 1) + ". " + books.get(i));
+      }
+
+      System.out.print("Choose the number of the book to edit: ");
+      int index = scanner.nextInt() - 1;
+      scanner.nextLine(); // Clear the newline character from the buffer
+
+      if (index < 0 || index >= books.size()) {
+          System.out.println("Invalid book number.");
+          return;
+      }
+
+      Book bookToEdit = books.get(index);
+
+      System.out.print("New title (press Enter to skip): ");
+      String newTitle = scanner.nextLine();
+      if (!newTitle.isEmpty()) {
+          bookToEdit.setTitle(newTitle);
+      }
+
+      System.out.print("New author (press Enter to skip): ");
+      String newAuthor = scanner.nextLine();
+      if (!newAuthor.isEmpty()) {
+          bookToEdit.setAuthor(newAuthor);
+      }
+
+      System.out.print("New publication year (press Enter to skip): ");
+      String newYearStr = scanner.nextLine();
+      if (!newYearStr.isEmpty()) {
+          try {
+              int newYear = Integer.parseInt(newYearStr);
+              bookToEdit.setYear(newYear);
+          } catch (NumberFormatException e) {
+              System.out.println("Invalid year format.");
+          }
+      }
+
+      System.out.print("New genre (press Enter to skip): ");
+      String newGenre = scanner.nextLine();
+      if (!newGenre.isEmpty()) {
+          bookToEdit.setGenre(newGenre);
+      }
+
+      System.out.println("Book updated successfully.");
     }
   }
