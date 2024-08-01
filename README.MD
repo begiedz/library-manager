@@ -1,6 +1,6 @@
 # Library Manager
 
-Library Manager to prosty program do zarządzania biblioteką książek napisany w języku Java. Poniżej znajdziesz instrukcje dotyczące obsługi programu.
+Library Manager to prosty program do zarządzania biblioteką książek napisany w języku Java.
 
 ## Zaimplementowane funkcjonalności
 
@@ -18,7 +18,6 @@ Aby uruchomić program, wykonaj następujące kroki:
 
 1. Skompiluj pliki źródłowe za pomocą odpowiedniego narzędzia do kompilacji Javy.
 2. Uruchom plik wykonywalny, który zawiera klasę Main.
-   Menu Główne
 
 ### Menu Główne
 
